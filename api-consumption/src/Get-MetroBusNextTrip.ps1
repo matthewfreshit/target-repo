@@ -41,7 +41,7 @@ function Get-MetroBusNextTrip {
     try {
         $busRouteInfo = Get-MetroBusRouteInfo -BusRouteName $BusRouteName 
 
-        $directionInfo = Get-MetroRouteDirectionInfo -BusRouteId $busRouteInfo.RouteId -Direction $Direction
+        $directionInfo = Get-MetroBusRouteDirectionInfo -BusRouteId $busRouteInfo.RouteId -Direction $Direction
     
         $busStopInfoSplat = @{
             BusStopName = $BusStopName;

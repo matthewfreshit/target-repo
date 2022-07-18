@@ -15,8 +15,7 @@
         './metroinfo/Get-MetroBusRouteInfo.ps1',
         './metroinfo/Get-MetroBusStopInfo.ps1',
         './metroinfo/Get-MetroBusStopScheduleInfo.ps1',
-        './metroinfo/Get-MetroRouteDirectionInfo.ps1',
-        './metroinfo/Get-MetroRouteScheduleInfo.ps1'
+        './metroinfo/Get-MetroBusRouteDirectionInfo.ps1'
     )
     PrivateData           = @{
         PSData = @{
