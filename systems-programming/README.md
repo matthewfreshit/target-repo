@@ -28,7 +28,7 @@ Eg
 - [Mount Points](https://www.ibm.com/docs/en/aix/7.1?topic=mounting-mount-points)
 
 ## Requirements
-- PowerShell 5.1 or higher
+- [PowerShell 5.1](https://www.microsoft.com/en-us/download/details.aspx?id=54616) or [higher](https://github.com/PowerShell/PowerShell/releases/tag/v7.2.5)
 
 ## Assumptions
 - The mountpoint is a valid directory on the filesystem.

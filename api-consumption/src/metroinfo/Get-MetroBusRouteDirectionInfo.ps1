@@ -35,7 +35,7 @@ function Get-MetroBusRouteDirectionInfo {
         $directionInfo = Invoke-MetroAPIRequest -EndpointPath $directionEndpoint -IsNextTripV2 `
             | Where-Object { $_.direction_name -ilike "$Direction*" } `
             | Select-Object @{N = 'DirectionId'; E = { $_.direction_id } }, @{N = 'DirectionName'; E = { $_.direction_name } } 
-        if ([string]::IsNullOrEmpty($directionInfo)) {
+        if (!$directionInfo) {
             throw "No busses on this route are going in the specified direction '{0}'" -f $Direction
         }
         $directionInfo

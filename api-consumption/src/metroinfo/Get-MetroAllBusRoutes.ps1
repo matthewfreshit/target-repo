@@ -16,10 +16,11 @@ function Get-MetroAllBusRoutes {
 
     Write-Verbose -Message "Getting all Bus routes for the metro"
     $endpoint = "routes"
-    $routesInfo = Invoke-MetroAPIRequest -EndpointPath $endpoint -IsSchedule `
+    $routesInfo = Invoke-MetroAPIRequest -EndpointPath $endpoint -IsNextTripV2 `
         | Select-Object @{N='RouteLabel'; E = {$_.route_label}}, @{N='RouteId'; E = {$_.route_id}}
-    $routesInfo 
+    
     Write-Verbose -Message "Finished $($MyInvocation.MyCommand.Name)"
+    $routesInfo 
 }
 
 Export-ModuleMember -Function Get-MetroAllBusRoutes

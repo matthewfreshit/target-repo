@@ -40,7 +40,7 @@ function Get-MetroBusStopInfo {
         $stopInfo = Invoke-MetroAPIRequest -EndpointPath $endpoint -IsNextTripV2 `
             | Where-Object {$_.description -ilike "*$BusStopName*"} `
             | Select-Object @{N = 'PlaceCode'; E = { $_.place_code } }, @{N = 'Description'; E = { $_.description } }
-        if ([string]::IsNullOrEmpty($stopInfo)) {
+        if (!$stopInfo) {
             throw "No bus stop was found by given bus stop name."
         }
         if (($stopInfo | Measure-Object).Count -gt 1) {

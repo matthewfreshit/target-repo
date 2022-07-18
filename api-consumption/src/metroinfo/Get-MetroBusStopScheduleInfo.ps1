@@ -40,13 +40,17 @@ function Get-MetroBusStopScheduleInfo {
         $endpoint = "$BusRouteId/$DirectionId/$PlaceCode"
         $scheduleInfo = Invoke-MetroAPIRequest -EndpointPath $endpoint -IsNextTripV2 
 
+        if (!$scheduleInfo) {
+            throw "No bus stop was found by given bus stop name."
+        }
+
         $departureTimeInfo = $scheduleInfo | Select-Object -ExpandProperty departures `
             | Where-Object { $_.direction_id -eq $DirectionId -and $_.schedule_relationship -eq "Scheduled" } `
             | Select-Object @{N = 'DepartureTime'; E = { $_.departure_time } } -First 1
 
         [PSCustomObject]@{
             Alerts = $scheduleInfo.alerts
-            DepartureTime = $departureTimeInfo.DepartureTime
+            DepartureTime = if($departureTimeInfo){$departureTimeInfo.DepartureTime}else{$null}
         }
     }
     catch {

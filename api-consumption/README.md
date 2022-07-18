@@ -32,7 +32,7 @@ $ nextbus.py "METRO Blue Line" "Target Field Station Platform 1" "south"
 - [Swagger Documentation](https://svc.metrotransit.org/swagger/index.html)
 
 ## Requirements
-- PowerShell 5.1 or higher
+- [PowerShell 5.1](https://www.microsoft.com/en-us/download/details.aspx?id=54616) or [higher](https://github.com/PowerShell/PowerShell/releases/tag/v7.2.5)
 
 ## Assumptions
 - The API endpoint is accessible.
