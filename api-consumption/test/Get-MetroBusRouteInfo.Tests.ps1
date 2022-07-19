@@ -22,18 +22,22 @@ InModuleScope 'Target.API.Consumption' {
             return @(
                 [PSCustomObject]@{
                     RouteLabel = 'Metro Blue Line'
+                    RouteDescription = 'Metro Blue Line - Description'
                     RouteId    = '901'
                 }
                 [PSCustomObject]@{
                     RouteLabel = 'Blue Line Bus'
+                    RouteDescription = 'Blue Line Bus - Description'
                     RouteId    = '991'
                 }
                 [PSCustomObject]@{
                     RouteLabel = 'Metro Green Line'
+                    RouteDescription = 'Metro Green Line - Description'
                     RouteId    = '902'
                 }
                 [PSCustomObject]@{
                     RouteLabel = 'Metro Red Line'
+                    RouteDescription = 'Metro Red Line - Description'
                     RouteId    = '903'
                 }
             )

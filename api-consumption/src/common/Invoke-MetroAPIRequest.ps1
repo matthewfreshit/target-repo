@@ -24,7 +24,7 @@ function Invoke-MetroAPIRequest {
         [ValidateNotNullOrEmpty()]
         [string]$EndpointPath,
         [Parameter(ParameterSetName = 'NextTrip', Mandatory = $true,
-            HelpMessage = "Switch for 'nexttripv2' route" )]
+            HelpMessage = "Switch for 'nextripv2' route" )]
         [switch]$IsNextTripV2,
         [Parameter(ParameterSetName = 'Alerts', Mandatory = $true,
             HelpMessage = "Switch for 'alerts' route")]
@@ -50,6 +50,7 @@ function Invoke-MetroAPIRequest {
         }
     }
     $uri = "$Origin/$selectedRoute/$EndpointPath"
+    Write-Verbose -Message ("Web request to {0}" -f $uri)
     $RespError = $null
     try {
         $returnInfo = (Invoke-WebRequest -Uri $uri -ErrorVariable RespError).Content | ConvertFrom-Json

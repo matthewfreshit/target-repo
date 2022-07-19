@@ -17,7 +17,7 @@ function Get-MetroBusNextTrip {
 
         This will prompt the user for each of the inputs individually and return the time until the next bus will arive.
     .EXAMPLE
-        Get-MetroBusNextTrip -BusRoute 'METRO Blue' -BusStopName 'Nicollet Mall Stat' -Direction 'North'
+        Get-MetroBusNextTrip -BusRouteName 'METRO Blue' -BusStopName 'Nicollet Mall Stat' -Direction 'North'
 
         This will return the time until the next bus will arrive for the Target North Campus Building F in the North direction.
     #>
@@ -54,40 +54,41 @@ function Get-MetroBusNextTrip {
         $busStopSchedule = Get-MetroBusStopScheduleInfo -BusRouteId $busRouteInfo.RouteId -DirectionId $directionInfo.DirectionId -PlaceCode $busStopInfo.PlaceCode
     
         if (($busStopSchedule.Alerts | Measure-Object).Count -gt 0) {
-            if ($busStopInfo.alerts.stop_closed -eq $true) {
-                Write-Warning -Message "Bus stop is closed"
+            if ($busStopSchedule.Alerts.stop_closed -eq $true) {
+                Write-Warning -Message "Bus stop is closed."
             }
-            Write-Warning -Message ($busStopInfo.Alerts.alert_text -join ' ')
+            Write-Warning -Message ($busStopSchedule.Alerts.alert_text -join ' ')
         }
         if ([string]::IsNullOrEmpty($busStopSchedule.DepartureTime)) {
-            Write-Warning -Message ("Bus route '{0}' has no more departures for stop '{1}' in '{2}' direction" `
-                    -f $busRouteInfo.RouteLabel, $busStopInfo.StopName, $directionInfo.DirectionName)
+            Write-Warning -Message ("Bus route '{0}' has no more departures for stop '{1}' in '{2}' direction." `
+                    -f $busRouteInfo.RouteLabel, $busStopInfo.Description, $directionInfo.DirectionName)
             return
         }
     
-        Write-Verbose -Message "Calculating time until next trip"
+        Write-Verbose -Message "Calculating time until next trip."
     
         $localTime = (Get-Date).ToLocalTime()
+
+        #Calculate the time until the next bus arrives by using the Epoch time as a base.
         $departureTime = (Get-Date 01.01.1970).AddSeconds($busStopSchedule.DepartureTime).ToLocalTime()
         $timeUntilDeparture = $departureTime - $localTime
         $OutputTime = ""
-        if ($timeUntilDeparture.Hours -gt 0) {
-            $OutputTime += $timeUntilDeparture.Hours.ToString() + " hours - "
-        }
-        $roundedMinutes = [Math]::Ceiling($timeUntilDeparture.TotalMinutes)
-        if ($roundedMinutes -gt 0) {
+        if ($timeUntilDeparture.TotalMinutes -ge 1) {
+            $roundedMinutes = [Math]::Ceiling($timeUntilDeparture.TotalMinutes)
             $OutputTime += ($roundedMinutes).ToString() + " minutes "
         }
-        if ([string]::IsNullOrEmpty($OutputTime) -and $timeUntilDeparture.Seconds -le 60) {
-            Write-Warning -Message ("Bus is DUE at route '{0}' for stop '{1}' in '{2}' direction in under a minute" `
+        else {
+            Write-Warning -Message ("Bus is DUE at route '{0}' for stop '{1}' in '{2}' direction in under a minute." `
                     -f $busRouteInfo.RouteLabel, $busStopInfo.Description, $directionInfo.DirectionName)
             return
         }
     
         $OutputTime
-    } catch {
+    }
+    catch {
         Write-Error $_.Exception.Message
-    } finally {
+    }
+    finally {
         Write-Verbose -Message "Finished $($MyInvocation.MyCommand.Name)"
     }
 }

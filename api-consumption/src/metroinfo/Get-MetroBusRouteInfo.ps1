@@ -25,7 +25,7 @@ function Get-MetroBusRouteInfo {
 
     Write-Verbose -Message ("Getting Bus Routes info for '{0}'" -f $BusRouteName)
     try {
-        $busRouteInfo = Get-MetroAllBusRoutes | Where-Object { $_.RouteLabel -ilike "*$BusRouteName*" }
+        $busRouteInfo = Get-MetroAllBusRoutes | Where-Object { $_.RouteLabel -ilike "*$BusRouteName*" -or $_.RouteDescription -ilike "*$BusRouteName*" }
         if (!$busRouteInfo) {
             throw "No bus route found for given bus route name."
         }

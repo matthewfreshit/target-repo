@@ -45,12 +45,12 @@ function Get-MetroBusStopScheduleInfo {
         }
 
         $departureTimeInfo = $scheduleInfo | Select-Object -ExpandProperty departures `
-            | Where-Object { $_.direction_id -eq $DirectionId -and $_.schedule_relationship -eq "Scheduled" } `
-            | Select-Object @{N = 'DepartureTime'; E = { $_.departure_time } } -First 1
+            | Where-Object { $_.direction_id -eq $DirectionId -and $_.schedule_relationship -ne "Skipped" } `
+            | Select-Object -ExpandProperty departure_time -First 1
 
         [PSCustomObject]@{
-            Alerts = $scheduleInfo.alerts
-            DepartureTime = if($departureTimeInfo){$departureTimeInfo.DepartureTime}else{$null}
+            Alerts        = $scheduleInfo.alerts
+            DepartureTime = $departureTimeInfo
         }
     }
     catch {

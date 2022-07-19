@@ -2,7 +2,7 @@
     RootModule            = 'Target.API.Consumption.psm1'
     Author                = 'Matthew Leleux'
     Description           = 'Target Case Study Project - API Consumption'
-    PowerShellVersion     = '5.1'
+    PowerShellVersion     = '7.2.5'
     ProcessorArchitecture = 'None'
     FunctionsToExport     = '*'
     CmdletsToExport       = '*'

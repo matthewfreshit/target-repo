@@ -14,7 +14,6 @@ $rootRepoPath = Split-Path -Path $PSScriptRoot -Parent
 Get-Module -Name 'Target.API.Consumption' | Remove-Module -Force -Verbose:$false
 Import-Module -Force "$rootRepoPath\src\Target.API.Consumption.psm1" -DisableNameChecking -Global -Verbose:$false
 
-
 InModuleScope 'Target.API.Consumption' {
     Describe 'Get-MetroAllBusRoutes' {
         Mock Invoke-MetroAPIRequest -MockWith { }
@@ -28,30 +27,34 @@ InModuleScope 'Target.API.Consumption' {
         }
         Context 'Success'{
             Mock Invoke-MetroAPIRequest -ParameterFilter {
-                $IsNextTripV2 -eq $true -and $EndpointPath -eq 'routes'
+                $IsSchedule -eq $true -and $EndpointPath -eq 'routes'
             } -MockWith {
                 return @(
                     [PSCustomObject]@{
                         route_label = 'Metro Blue Line'
+                        description = 'Metro Blue Line - Description'
                         route_id = '901'
                     }
                     [PSCustomObject]@{
                         route_label = 'Blue Line Bus'
+                        description = 'Blue Line Bus - Description'
                         route_id = '991'
                     }
                     [PSCustomObject]@{
                         route_label = 'Metro Green Line'
+                        description = 'Metro Green Line - Description'
                         route_id = '902'
                     }
                     [PSCustomObject]@{
                         route_label = 'Metro Red Line'
+                        description = 'Metro Red Line - Description'
                         route_id = '903'
                     }
                 )
             }
             It 'Should return all bus routes' {
                 $result = Get-MetroAllBusRoutes
-                $result.Count | Should -Be 4
+                ($result | Measure-Object).Count | Should -Be 4
 
                 Assert-MockCalled -CommandName Invoke-MetroAPIRequest -Times 1 -Exactly
             }
