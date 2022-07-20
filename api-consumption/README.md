@@ -34,6 +34,10 @@ $ nextbus.py "METRO Blue Line" "Target Field Station Platform 1" "south"
 
 ## Requirements
 - [PowerShell 5.1](https://www.microsoft.com/en-us/download/details.aspx?id=54616) or [higher (Preferred)](https://github.com/PowerShell/PowerShell/releases/tag/v7.2.5)
+- [Pester (Max Version 4.10.1)](https://github.com/pester/Pester/releases/tag/4.10.1) - This can be installed via a **Admin** Powershell session by running the following command:
+```powershell
+Install-Module Pester -MaximumVersion 4.10.1 -Repository PSGallery -Scope CurrentUser -Force
+```
 
 ## Installation
 1. Clone the repository into an accessible directory on your local machine.
@@ -47,6 +51,8 @@ git clone https://github.com/matthewfreshit/target-repo.git
 # Execution policy has to be set due to this not being a digitally signed module.
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Confirm:$false -Force
 
+# Remove-Module Target.API.Consumption # Uncomment this line if you want to remove the module from the current powershell session.
+
 Import-Module "G:\FreshIT\GitRepos\Target\target-repo\api-consumption\src\Target.API.Consumption.psm1" #Replace with your local relative path to the Target.API.Consumption.psm1 file
 ```
 
@@ -55,7 +61,7 @@ Import-Module "G:\FreshIT\GitRepos\Target\target-repo\api-consumption\src\Target
 
 <br>
 
-*Invidual Member Function Usage*
+*Individual Member Function Usage*
 
 ```powershell
 Get-MetroAllBusRoutes # Returns all Bus Routes
@@ -86,11 +92,13 @@ Get-MetroBusNextTrip -BusRouteName 'Metro Blue' -BusStopName 'MSP Airport Termin
 - Unit (Pester) tests have been written for each member function and have 100% code coverage.
 - Powershell's Pester Module will need to be installed to run the unit tests. The pester scripts have a `try/catch` built in to install this package if it doesn't exist, but the commands below can be used to install it manually.
 ```powershell
-Install-Module Pester -MaximumVersion 4.99.99 -Repository PSGallery -Scope CurrentUser -Force
-Import-Module -Name Pester -MaximumVersion '4.99.99'
+Install-Module Pester -MaximumVersion 4.10.1 -Repository PSGallery -Scope CurrentUser -Force
+Import-Module -Name Pester -MaximumVersion '4.10.1'
 ```
-- To invoke the pester tests, run `Invoke-Pester` from a Powershell session with the `api-consumption` folder set as the current directory.
-
+- To invoke the pester tests and to see full code coverage results, run the following command (`Target.API.Consumption` module must be imported into the current Powershell session):
+```powershell
+Invoke-MetroAPICodeCoverage
+```
 ## Notes
 - Extra error handling has been added into this module to create a more seamless user experience. The current structure will prevent full exceptions from displaying and instead return a friendly error message.
 
@@ -106,4 +114,3 @@ Import-Module -Name Pester -MaximumVersion '4.99.99'
      - Error will be thrown with a message indicating the API endpoint is not accessible.
 - The input parameters are invalid.
     - Error message from the API will be returned.
-

@@ -1,13 +1,12 @@
 Set-StrictMode -Version 'Latest';
 
 try{
-    Import-Module -Name Pester -MaximumVersion '4.99.99'
+    Import-Module -Name Pester -MaximumVersion '4.10.1'
 } catch {
     Write-Host 'Pester module not found. Please install Pester module.'
-    Install-Module Pester -MaximumVersion 4.99.99 -Repository PSGallery -Scope CurrentUser -Force
-    Import-Module -Name Pester -MaximumVersion '4.99.99'
+    Install-Module Pester -MaximumVersion 4.10.1 -Repository PSGallery -Scope CurrentUser -Force
+    Import-Module -Name Pester -MaximumVersion '4.10.1'
 }
-
 
 $rootRepoPath = Split-Path -Path $PSScriptRoot -Parent
 

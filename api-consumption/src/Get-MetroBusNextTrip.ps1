@@ -51,7 +51,13 @@ function Get-MetroBusNextTrip {
     
         $busStopInfo = Get-MetroBusStopInfo @busStopInfoSplat
     
-        $busStopSchedule = Get-MetroBusStopScheduleInfo -BusRouteId $busRouteInfo.RouteId -DirectionId $directionInfo.DirectionId -PlaceCode $busStopInfo.PlaceCode
+        $busStopScheduleInfoSplat = @{
+            BusRouteId = $busRouteInfo.RouteId 
+            DirectionId = $directionInfo.DirectionId 
+            PlaceCode = $busStopInfo.PlaceCode
+        }
+
+        $busStopSchedule = Get-MetroBusStopScheduleInfo @busStopScheduleInfoSplat
     
         if (($busStopSchedule.Alerts | Measure-Object).Count -gt 0) {
             if ($busStopSchedule.Alerts.stop_closed -eq $true) {
@@ -75,7 +81,7 @@ function Get-MetroBusNextTrip {
         $OutputTime = ""
         if ($timeUntilDeparture.TotalMinutes -ge 1) {
             $roundedMinutes = [Math]::Ceiling($timeUntilDeparture.TotalMinutes)
-            $OutputTime += ($roundedMinutes).ToString() + " minutes "
+            $OutputTime += ($roundedMinutes).ToString() + " minutes"
         }
         else {
             Write-Warning -Message ("Bus is DUE at route '{0}' for stop '{1}' in '{2}' direction in under a minute." `
@@ -86,7 +92,7 @@ function Get-MetroBusNextTrip {
         $OutputTime
     }
     catch {
-        Write-Error $_.Exception.Message
+        Write-Error -Message $_.Exception.Message
     }
     finally {
         Write-Verbose -Message "Finished $($MyInvocation.MyCommand.Name)"

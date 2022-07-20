@@ -6,12 +6,34 @@ function Invoke-MetroAPIRequest {
         Gets all valid route information for the metro transit.
     .DESCRIPTION
         Invoke-MetroAPIRequest will return all valid route info for the metro transit.
-    .PARAMETER Direction
-        Direction of the desired bus stop.
+    .PARAMETER Origin
+        Origin info the the Metro Transit API
+    .PARAMETER EndpointPath
+        Path to the requested endpoint
+    .PARAMETER IsNextTripV2
+        Switch for 'nextripv2' route
+    .PARAMETER IsAlerts
+        Switch for 'alerts' route
+    .PARAMETER IsTripPlanner
+        Switch for 'tripplanner' route
+    .PARAMETER IsSchedule
+        Switch for 'schedule' route
     .EXAMPLE
-        Invoke-MetroAPIRequest
+        Invoke-MetroAPIRequest -Origin 'https://example.svc.org' -EndpointPath 'routes' -IsSchedule
 
-        This will return all valid routes.
+        This will return all bus routes from the 'schedule' route from origin 'https://example.svc.org'.
+    .EXAMPLE
+        Invoke-MetroAPIRequest -EndpointPath 'routes' -IsNextTripV2
+
+        This will return all bus routes from the 'nextripv2' route.
+    .EXAMPLE
+        Invoke-MetroAPIRequest -EndpointPath 'all' -IsAlerts
+
+        This will return all alerts from the 'alerts' route.
+    .EXAMPLE
+        Invoke-MetroAPIRequest -EndpointPath 'findaddress/magickey' -IsTripPlanner
+
+        This will return the address matching magic key from the 'tripplanner' route.
     #>
 
     Param (
@@ -51,15 +73,17 @@ function Invoke-MetroAPIRequest {
     }
     $uri = "$Origin/$selectedRoute/$EndpointPath"
     Write-Verbose -Message ("Web request to {0}" -f $uri)
-    $RespError = $null
     try {
-        $returnInfo = (Invoke-WebRequest -Uri $uri -ErrorVariable RespError).Content | ConvertFrom-Json
-        $returnInfo
+        $returnInfo = (Invoke-WebRequest -Uri $uri).Content | ConvertFrom-Json
+        $returnInfo 
     }
     catch {
-        $jsonCorrected = [Text.Encoding]::UTF8.GetString([Text.Encoding]::GetEncoding(28591).GetBytes(($RespError[0].Message))) 
-        $errResponse = $jsonCorrected | ConvertFrom-Json
-        throw $errResponse.detail
+        if($_.ErrorDetails){
+            $errResponse = $_.ErrorDetails.Message | ConvertFrom-Json
+            throw $errResponse.detail
+        } else {
+            throw $_.Exception.Message
+        }
     }
 }
 

@@ -4,8 +4,8 @@ This is Matthew Leleux's Target Interview Repo. It will consist of several proje
 
 ## Case Study Projects
 
-- ### [API Consumption](api-consumption/README.md)
+- ### [API Consumption](api-consumption/README.md) - **Complete**
     - This project will be consuming a given [API (Metro Transit)](https://svc.metrotransit.org/) which will tell you how long it is until the next bus on "**BUS ROUTE**" leaving from "**BUS STOP NAME**" going "**DIRECTION**". 
 
-- ### [Systems Programming](systems-programming/README.md)
+- ### [Systems Programming](systems-programming/README.md) - **Incomplete**
     - This project will be providing a utility that will return a list of files in a given directory ("mountpoint") and their disk usage in bytes in json format.

@@ -1,20 +1,18 @@
 Set-StrictMode -Version 'Latest';
 
 try {
-    Import-Module -Name Pester -MaximumVersion '4.99.99'
+    Import-Module -Name Pester -MaximumVersion '4.10.1'
 }
 catch {
     Write-Host 'Pester module not found. Please install Pester module.'
-    Install-Module Pester -MaximumVersion 4.99.99 -Repository PSGallery -Scope CurrentUser -Force
-    Import-Module -Name Pester -MaximumVersion '4.99.99'
+    Install-Module Pester -MaximumVersion 4.10.1 -Repository PSGallery -Scope CurrentUser -Force
+    Import-Module -Name Pester -MaximumVersion '4.10.1'
 }
-
 
 $rootRepoPath = Split-Path -Path $PSScriptRoot -Parent
 
 Get-Module -Name 'Target.API.Consumption' | Remove-Module -Force -Verbose:$false
 Import-Module -Force "$rootRepoPath\src\Target.API.Consumption.psm1" -DisableNameChecking -Global -Verbose:$false
-
 
 InModuleScope 'Target.API.Consumption' {
     Describe 'Get-MetroBusRouteInfo' {
