@@ -53,10 +53,15 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Confirm:$false -Forc
 
 # Remove-Module Target.API.Consumption # Uncomment this line if you want to remove the module from the current powershell session.
 
-Import-Module "G:\FreshIT\GitRepos\Target\target-repo\api-consumption\src\Target.API.Consumption.psm1" #Replace with your local relative path to the Target.API.Consumption.psm1 file
+#Replace with your local relative path to the Target.API.Consumption.psm1 file
+Import-Module "G:\FreshIT\GitRepos\Target\target-repo\api-consumption\src\Target.API.Consumption.psm1" 
 ```
 
 ## Usage
+<p align="center">
+  <img src="images/Target_API_Consumption.png" />
+</p>
+
 - After importing the module into your Powershell session you will now be able to use the member functions individually, or you can use the `Get-MetroBusNextTrip` function to get the next bus for a given bus route, bus stop, and direction.
 
 <br>
@@ -64,28 +69,37 @@ Import-Module "G:\FreshIT\GitRepos\Target\target-repo\api-consumption\src\Target
 *Individual Member Function Usage*
 
 ```powershell
-Get-MetroAllBusRoutes # Returns all Bus Routes
+# Returns all Bus Routes
+Get-MetroAllBusRoutes
 
-Get-MetroBusRouteInfo -BusRouteName "Metro Blue" # Or we can use 'Blue Line - Mpls - Airport - ' to get the same result. This will return info about the Metro Blue Line route.
+# Or we can use 'Blue Line - Mpls - Airport - ' to get the same result. This will return info about the Metro Blue Line route.
+Get-MetroBusRouteInfo -BusRouteName "Metro Blue"
 
-Get-MetroBusRouteDirectionInfo -BusRouteId '901' -Direction 'south' # Returns bus route direction info
+# Returns bus route direction info
+Get-MetroBusRouteDirectionInfo -BusRouteId '901' -Direction 'south'
 
-Get-MetroBusStopInfo -BusStopName 'MSP Airport Terminal 1' -BusRouteId '901' -DirectionId '0' # Returns bus stop info
+# Returns bus stop info
+Get-MetroBusStopInfo -BusStopName 'MSP Airport Terminal 1' -BusRouteId '901' -DirectionId '0'
 
+# Returns bus stop schedule info
 $schedulInfo = Get-MetroBusStopScheduleInfo -PlaceCode 'LIND' -BusRouteId '901' -DirectionId '0' # Returns bus stop schedule info
 
-$schedulInfo | Format-Custom -Depth 3 # Returns the schedule info in a more readable format
+# Returns the schedule info in a more readable format
+$schedulInfo | Format-Custom -Depth 3
 ```
 <br>
 
 *`Get-MetroBusNextTrip` Function Usage*
 
 ```powershell
-Get-MetroBusNextTrip #This option will prompt the user to enter the bus route, bus stop, and direction.
+#This option will prompt the user to enter the bus route, bus stop, and direction.
+Get-MetroBusNextTrip
 
-Get-MetroBusNextTrip -BusRouteName 'Metro Blue' -BusStopName 'MSP Airport Terminal 1' -Direction 'South' # Should return the next bus for the given bus route, bus stop, and direction if it is available. It will also show any alerts for the bus route and bus stop if they exist.
+# Should return the next bus for the given bus route, bus stop, and direction if it is available. It will also show any alerts for the bus route and bus stop if they exist.
+Get-MetroBusNextTrip -BusRouteName 'Metro Blue' -BusStopName 'MSP Airport Terminal 1' -Direction 'South'
 
-Get-MetroBusNextTrip -BusRouteName 'Metro Blue' -BusStopName 'MSP Airport Terminal 1' -Direction 'South' -Verbose #Add verbose switch to view logs
+#Add verbose switch to view logs
+Get-MetroBusNextTrip -BusRouteName 'Metro Blue' -BusStopName 'MSP Airport Terminal 1' -Direction 'South' -Verbose
 ```
 
 ## Testing
@@ -93,6 +107,7 @@ Get-MetroBusNextTrip -BusRouteName 'Metro Blue' -BusStopName 'MSP Airport Termin
 - Powershell's Pester Module will need to be installed to run the unit tests. The pester scripts have a `try/catch` built in to install this package if it doesn't exist, but the commands below can be used to install it manually.
 ```powershell
 Install-Module Pester -MaximumVersion 4.10.1 -Repository PSGallery -Scope CurrentUser -Force
+
 Import-Module -Name Pester -MaximumVersion '4.10.1'
 ```
 - To invoke the pester tests and to see full code coverage results, run the following command (`Target.API.Consumption` module must be imported into the current Powershell session):
