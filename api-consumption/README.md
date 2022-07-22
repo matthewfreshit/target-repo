@@ -51,7 +51,8 @@ git clone https://github.com/matthewfreshit/target-repo.git
 # Execution policy has to be set due to this not being a digitally signed module.
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Confirm:$false -Force
 
-# Remove-Module Target.API.Consumption # Uncomment this line if you want to remove the module from the current powershell session.
+# Uncomment the line below if you want to remove the module from the current powershell session.
+# Remove-Module Target.API.Consumption
 
 #Replace with your local relative path to the Target.API.Consumption.psm1 file
 Import-Module "G:\FreshIT\GitRepos\Target\target-repo\api-consumption\src\Target.API.Consumption.psm1" 
@@ -82,7 +83,7 @@ Get-MetroBusRouteDirectionInfo -BusRouteId '901' -Direction 'south'
 Get-MetroBusStopInfo -BusStopName 'MSP Airport Terminal 1' -BusRouteId '901' -DirectionId '0'
 
 # Returns bus stop schedule info
-$schedulInfo = Get-MetroBusStopScheduleInfo -PlaceCode 'LIND' -BusRouteId '901' -DirectionId '0' # Returns bus stop schedule info
+$schedulInfo = Get-MetroBusStopScheduleInfo -PlaceCode 'LIND' -BusRouteId '901' -DirectionId '0'
 
 # Returns the schedule info in a more readable format
 $schedulInfo | Format-Custom -Depth 3
